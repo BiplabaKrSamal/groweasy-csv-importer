@@ -47,6 +47,7 @@ export interface ExtractionResult {
   total_input: number;
   total_imported: number;
   total_skipped: number;
+  engine: string;
 }
 
 export interface RawCsvRow {

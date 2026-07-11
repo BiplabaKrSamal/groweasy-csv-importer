@@ -43,6 +43,12 @@ export function ResultTable({ result }: { result: ExtractionResult }) {
 
   return (
     <div className="space-y-4">
+      {result.engine === "mock" && (
+        <div className="rounded border border-amber bg-panel px-4 py-2 font-data text-[11px] uppercase tracking-widest text-amber">
+          Demo mode &middot; rule-based mapping, no LLM key configured on this deployment
+        </div>
+      )}
+
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Total Input" value={result.total_input} tone="amber" />
         <Stat label="Imported" value={result.total_imported} tone="ok" />

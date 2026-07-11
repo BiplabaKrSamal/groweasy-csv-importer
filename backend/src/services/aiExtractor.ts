@@ -3,6 +3,7 @@ import { RawCsvRow, CrmRecordDraft, ExtractionResult } from "../types";
 import { chunk, runWithConcurrency } from "../utils/batching";
 import { buildBatchPrompt, SYSTEM_PROMPT } from "../utils/prompt";
 import { callAiProvider, extractJson } from "./aiProviders";
+import { mockExtractBatch } from "./aiProviders/mock";
 import { validateDraft } from "./validator";
 
 interface BatchResponse {
@@ -10,6 +11,8 @@ interface BatchResponse {
 }
 
 async function extractBatch(rows: RawCsvRow[]): Promise<CrmRecordDraft[]> {
+  if (config.aiProvider === "mock") return mockExtractBatch(rows);
+
   const raw = await callAiProvider(SYSTEM_PROMPT, buildBatchPrompt(rows));
   const parsed = extractJson(raw) as BatchResponse;
 
@@ -86,6 +89,7 @@ function finalize(rows: RawCsvRow[], parts: BatchParts[]): ExtractionResult {
     total_input: rows.length,
     total_imported: imported.length,
     total_skipped: skipped.length,
+    engine: config.aiProvider,
   };
 }
 

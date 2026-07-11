@@ -16,6 +16,7 @@ const EMPTY_RESULT: ExtractionResult = {
   total_input: 0,
   total_imported: 0,
   total_skipped: 0,
+  engine: "",
 };
 
 export default function Home() {
@@ -63,6 +64,7 @@ export default function Home() {
             total_input: prev.total_input,
             total_imported: prev.total_imported + p.batchImported.length,
             total_skipped: prev.total_skipped + p.batchSkipped.length,
+            engine: prev.engine,
           }));
         },
       });

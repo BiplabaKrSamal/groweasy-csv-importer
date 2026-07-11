@@ -49,6 +49,15 @@ Then open localhost:3000 and upload one of the files from `samples/`.
 `backend/src/services/aiProviders` is just a `fetch` call to that provider's API, nothing
 fancier, so swapping providers is a one-line change, not a rewrite.
 
+There's a fourth option, `AI_PROVIDER=mock`, which skips the LLM call entirely and runs
+`aiProviders/mock.ts` instead: plain header-name + keyword matching against the same CRM
+schema, same batching/streaming/validation path, just no network call and no key. It's what
+the hosted demo link runs by default so the app works without anyone needing to hand out an
+API key. It handles the layouts in `samples/` well but won't generalize to arbitrary exports
+the way the real thing does, that's the actual point of the assignment. The API response
+includes an `engine` field (`"mock"` or the real provider name) and the UI shows a small
+badge when it's running in mock mode, so it's never pretending to be doing more than it is.
+
 ## Rules
 
 These come from the assignment brief and are checked twice: once in the prompt itself
@@ -74,6 +83,9 @@ something the bad value gets caught rather than passed through.
 
 ## Deploying
 
-Backend goes on Railway or Render, just needs the env vars from `.env.example`. Frontend
-goes on Vercel with `NEXT_PUBLIC_API_URL` pointed at wherever the backend ends up. Update
-`CORS_ORIGIN` on the backend once you know the frontend's actual URL.
+`render.yaml` (backend) and `frontend/vercel.json` are both in the repo root, so Render's
+"New Blueprint" and Vercel's "Add New Project" pick up build/start commands automatically.
+The blueprint defaults `AI_PROVIDER=mock` and `CORS_ORIGIN=*`, so the first deploy needs zero
+manual input, it just works. To run it against a real model instead: set `AI_PROVIDER` and
+the matching API key in Render's dashboard, and once the frontend has a real Vercel URL,
+tighten `CORS_ORIGIN` to that instead of `*`.

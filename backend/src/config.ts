@@ -9,7 +9,7 @@ function int(name: string, fallback: number): number {
 
 export const config = {
   port: int("PORT", 8080),
-  aiProvider: (process.env.AI_PROVIDER || "anthropic") as "anthropic" | "openai" | "gemini",
+  aiProvider: (process.env.AI_PROVIDER || "anthropic") as "anthropic" | "openai" | "gemini" | "mock",
   batchSize: int("BATCH_SIZE", 15),
   batchConcurrency: int("BATCH_CONCURRENCY", 3),
   batchMaxRetries: int("BATCH_MAX_RETRIES", 3),

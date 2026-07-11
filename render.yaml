@@ -7,17 +7,17 @@ services:
     startCommand: npm start
     envVars:
       - key: AI_PROVIDER
-        value: anthropic
+        value: mock
       - key: ANTHROPIC_API_KEY
-        sync: false
+        value: ""
       - key: ANTHROPIC_MODEL
         value: claude-sonnet-4-6
       - key: OPENAI_API_KEY
-        sync: false
+        value: ""
       - key: OPENAI_MODEL
         value: gpt-4o-mini
       - key: GEMINI_API_KEY
-        sync: false
+        value: ""
       - key: GEMINI_MODEL
         value: gemini-2.0-flash
       - key: BATCH_SIZE
@@ -27,4 +27,4 @@ services:
       - key: BATCH_MAX_RETRIES
         value: "3"
       - key: CORS_ORIGIN
-        sync: false
+        value: "*"
