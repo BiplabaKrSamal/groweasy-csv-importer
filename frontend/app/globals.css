@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  color-scheme: dark;
+  /* dark bench-readout palette (default) */
+  --c-void: #0b0c0c;
+  --c-panel: #151718;
+  --c-panel-raised: #1b1e1f;
+  --c-line: #2a2d2e;
+  --c-amber: #ffb200;
+  --c-amber-dim: #8a5f00;
+  --c-amber-glow: #ffcf5c;
+  --c-signal-ok: #4ee0a0;
+  --c-signal-bad: #ff5c5c;
+  --c-ink: #e9e6df;
+  --c-ink-dim: #8d9092;
+  --c-ink-faint: #5b5e5f;
+}
+
+:root.light {
+  color-scheme: light;
+  /* daylight instrument panel: paper-toned, same amber/signal accents */
+  --c-void: #eeeae0;
+  --c-panel: #f7f4ec;
+  --c-panel-raised: #ece7db;
+  --c-line: #d8d2c2;
+  --c-amber: #b5740a;
+  --c-amber-dim: #e0c48f;
+  --c-amber-glow: #d98f10;
+  --c-signal-ok: #1f9d63;
+  --c-signal-bad: #d1453d;
+  --c-ink: #232120;
+  --c-ink-dim: #5c574c;
+  --c-ink-faint: #948d7c;
+}
+
+body {
+  background-color: var(--c-void);
+  color: var(--c-ink);
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.font-data {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* thin amber-tinted scrollbars, in keeping with the instrument-panel look */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3a3d3e transparent;
+}
+*::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #3a3d3e;
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #ffb200;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
