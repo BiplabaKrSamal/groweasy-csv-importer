@@ -83,19 +83,20 @@ something the bad value gets caught rather than passed through.
 
 ## Deploying
 
-`render.yaml` (backend) and `frontend/vercel.json` are both in the repo root, so Render's
-"New Blueprint" and Vercel's "Add New Project" pick up build/start commands automatically.
-The blueprint defaults `AI_PROVIDER=mock` and `CORS_ORIGIN=*`, so the first deploy needs zero
-manual input, it just works. To run it against a real model instead: set `AI_PROVIDER` and
-the matching API key in Render's dashboard, and once the frontend has a real URL, tighten
-`CORS_ORIGIN` to that instead of `*`.
+Both services deploy from `render.yaml` in the repo root — Render's "New Blueprint" reads it
+and provisions the backend (Node web service) and the frontend (static site) together. The
+blueprint defaults `AI_PROVIDER=mock` and `CORS_ORIGIN=*`, so the first deploy needs zero
+manual input beyond one field: `NEXT_PUBLIC_API_URL` on the frontend service, set to the
+backend's Render URL once it's live. To run the backend against a real model instead: set
+`AI_PROVIDER` and the matching API key in Render's dashboard, and tighten `CORS_ORIGIN` from
+`*` to the frontend's actual URL once both are stable.
 
-`render.yaml` now also defines the frontend itself as a second service, a static site on
-Render (`runtime: static`, `staticPublishPath: out`). This exists as a Vercel alternative,
-same account and dashboard as the backend, no separate signup. It works because the app has
-no API routes or server actions, everything talks to the Express backend over
-`NEXT_PUBLIC_API_URL`, so `next build` with `STATIC_EXPORT=true` (set only in this build
-command, not in `next.config.js` directly, since a plain export build can't run
-`next start`, which the Dockerfile still needs for local/Docker use) produces a plain static
-bundle. Applying the blueprint deploys both services; the only manual field is
-`NEXT_PUBLIC_API_URL` on the frontend service, set to the backend's Render URL.
+The frontend deploys as a static site (`runtime: static`, `staticPublishPath: out`), not a
+Node service, since the app has no API routes or server actions, everything talks to the
+Express backend over `NEXT_PUBLIC_API_URL`. `next build` runs with `STATIC_EXPORT=true` set
+only in this specific build command, not in `next.config.js` directly, since a plain export
+build can't run `next start`, which the Dockerfile still needs for local/Docker use.
+
+`frontend/vercel.json` is also still in the repo if Vercel is preferred instead, it works the
+same way (`Add New Project`, no manual build config needed), but the live deployment here
+runs entirely on Render.
