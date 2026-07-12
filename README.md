@@ -3,6 +3,9 @@
 Upload any lead export (Facebook, Google Ads, another CRM, a plain spreadsheet) and it gets
 mapped into GrowEasy's CRM schema, whatever the column layout looks like.
 
+**Live app:** https://groweasy-csv-importer-frontend-ddbs.onrender.com
+**API:** https://groweasy-csv-importer-backend-ddbs.onrender.com
+
 ## Flow
 
 1. Upload a `.csv` (drag and drop or file picker). Nothing hits the server yet.
