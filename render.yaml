@@ -29,3 +29,13 @@ services:
         value: "3"
       - key: CORS_ORIGIN
         value: "*"
+
+  - type: web
+    name: groweasy-csv-importer-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && STATIC_EXPORT=true npm run build
+    staticPublishPath: out
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        sync: false

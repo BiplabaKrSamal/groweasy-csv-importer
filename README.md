@@ -87,5 +87,15 @@ something the bad value gets caught rather than passed through.
 "New Blueprint" and Vercel's "Add New Project" pick up build/start commands automatically.
 The blueprint defaults `AI_PROVIDER=mock` and `CORS_ORIGIN=*`, so the first deploy needs zero
 manual input, it just works. To run it against a real model instead: set `AI_PROVIDER` and
-the matching API key in Render's dashboard, and once the frontend has a real Vercel URL,
-tighten `CORS_ORIGIN` to that instead of `*`.
+the matching API key in Render's dashboard, and once the frontend has a real URL, tighten
+`CORS_ORIGIN` to that instead of `*`.
+
+`render.yaml` now also defines the frontend itself as a second service, a static site on
+Render (`runtime: static`, `staticPublishPath: out`). This exists as a Vercel alternative,
+same account and dashboard as the backend, no separate signup. It works because the app has
+no API routes or server actions, everything talks to the Express backend over
+`NEXT_PUBLIC_API_URL`, so `next build` with `STATIC_EXPORT=true` (set only in this build
+command, not in `next.config.js` directly, since a plain export build can't run
+`next start`, which the Dockerfile still needs for local/Docker use) produces a plain static
+bundle. Applying the blueprint deploys both services; the only manual field is
+`NEXT_PUBLIC_API_URL` on the frontend service, set to the backend's Render URL.
