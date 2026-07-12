@@ -7,13 +7,23 @@ function int(name: string, fallback: number): number {
   return Number.isFinite(n) ? n : fallback;
 }
 
+// "*" must stay the bare string "*" for the cors package to treat it as a
+// true wildcard. Wrapping it in an array (["*"]) makes cors check for literal
+// membership instead, which no real Origin header ever matches, so every
+// cross-origin request silently loses its Access-Control-Allow-Origin header.
+export function parseCorsOrigin(raw: string | undefined): string | string[] {
+  const value = (raw || "*").trim();
+  if (value === "*") return "*";
+  return value.split(",").map((s) => s.trim());
+}
+
 export const config = {
   port: int("PORT", 8080),
   aiProvider: (process.env.AI_PROVIDER || "anthropic") as "anthropic" | "openai" | "gemini" | "mock",
   batchSize: int("BATCH_SIZE", 15),
   batchConcurrency: int("BATCH_CONCURRENCY", 3),
   batchMaxRetries: int("BATCH_MAX_RETRIES", 3),
-  corsOrigin: (process.env.CORS_ORIGIN || "*").split(",").map((s) => s.trim()),
+  corsOrigin: parseCorsOrigin(process.env.CORS_ORIGIN),
   anthropic: {
     apiKey: process.env.ANTHROPIC_API_KEY || "",
     model: process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6",
