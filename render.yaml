@@ -31,7 +31,7 @@ services:
         value: "*"
 
   - type: web
-    name: groweasy-csv-importer-frontend
+    name: groweasy-csv-importer
     runtime: static
     rootDir: frontend
     buildCommand: npm install && STATIC_EXPORT=true npm run build
